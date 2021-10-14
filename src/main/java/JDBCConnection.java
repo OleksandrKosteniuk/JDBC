@@ -4,6 +4,24 @@ public class JDBCConnection {
     private static final String URL = "jdbc:mysql://localhost:3306/mydatabase";
     private static final String USERNAME = "user";
     private static final String PASSWORD = "parol";
+    
+    public String getURL(){
+        return URL;
+    }
+
+    public String getUSERNAME(){
+        return USERNAME;
+    }
+
+    public String getPASSWORD(){
+        return PASSWORD;
+    }
+    
+    public void getConnectionDatabase(String URL, String  USERNAME, String PASSWORD) throws SQLException {
+        Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        
+    }
+    
         
     public static void main(String[] args) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 
