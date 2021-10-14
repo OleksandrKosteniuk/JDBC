@@ -24,11 +24,10 @@ public class TestJDBC {
             stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             rs = stmt.executeQuery("SELECT * FROM user");
             rs.last();
-
             System.out.println("Number of rows: " + rs.getRow());
 
-            Assert.assertTrue(rs.getRow()>0,"User table does not contain any records");
-            
+            Assert.assertTrue(rs.getRow() > 0, "User table does not contain any records");
+
         } catch (SQLException e) {
             System.err.println(e);
         } finally {
@@ -66,7 +65,7 @@ public class TestJDBC {
 
             System.out.println("Number of rows: " + rs.getRow());
 
-            Assert.assertTrue(rs.getRow()>0,"Salary table does not contain any records");
+            Assert.assertTrue(rs.getRow() > 0, "Salary table does not contain any records");
 
         } catch (SQLException e) {
             System.err.println(e);
@@ -82,6 +81,44 @@ public class TestJDBC {
             }
         }
     }
-    
+
+    @Test
+    public void getJoinedUserAndSalaryData() throws SQLException {
+
+        String URL = "jdbc:mysql://localhost:3306/mydatabase";
+        String USERNAME = "user";
+        String PASSWORD = "parol";
+
+        Connection connection = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+
+        System.out.println("Connecting database...");
+
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+
+            stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            rs = stmt.executeQuery("SELECT * FROM user JOIN salary ON user.id = salary.id WHERE salary>200");
+            rs.last();
+
+            System.out.println("Number of rows: " + rs.getRow());
+
+            Assert.assertTrue(rs.getRow() > 0, "Joined User and Salary tables do not contain any records with more than $200 salary");
+
+        } catch (SQLException e) {
+            System.err.println(e);
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        }
+    }
 }    
 
